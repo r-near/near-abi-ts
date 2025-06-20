@@ -35,13 +35,6 @@ The system uses advanced TypeScript conditional types for compile-time NEAR ABI 
 - **`ExtractParamNames<F, Definitions>`**: Maps function parameters to typed objects
 - **`ExtractReturnType<F, Definitions>`**: Infers return types from function result schemas
 
-### Utility Types (`src/utils/`)
-- **Schema Validation**: `IsValidSchema`, `ValidateSchema`, `ExtractSchemaType`
-- **Property Utilities**: `GetRequiredProperties`, `GetOptionalProperties`
-- **ABI Utilities**: `IsNearAbi`, `ValidateNearAbi`, `GetFunctionNames`, `GetFunctionByName`
-- **Type Composition**: `MergeSchemas`, `UnionToIntersection`
-- **General Utilities**: `Optional`, `Required`, `Nullable`, `NonNullable`, `Constrain`
-- **Debugging**: `Debug`, `Pretty` for type inspection
 
 ### Runtime Layer
 - **`TypedContract`**: Runtime class that dynamically creates methods from NEAR ABI functions with full NEAR.js integration
@@ -64,7 +57,6 @@ The system uses advanced TypeScript conditional types for compile-time NEAR ABI 
 - ✅ Full NEAR.js integration with Account objects
 - ✅ Support for deposit, gas, and waitUntil transaction parameters
 - ✅ Automatic view vs call function handling based on ABI kind
-- ✅ **NEW**: Comprehensive utility types for schema validation and manipulation
 
 ## Usage Pattern
 
