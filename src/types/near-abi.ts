@@ -3,6 +3,7 @@
  */
 
 import type { ExtractDefinitions, JsonSchemaToType } from "./schema.js"
+import type { TxExecutionStatus } from "@near-js/types"
 
 export type ExtractParamNames<F, Definitions = {}> = F extends {
   params: {
@@ -35,9 +36,12 @@ export type ExtractFunctionNames<T> = T extends {
 }
   ? ExtractDefinitions<T> extends infer Definitions
     ? {
-        [K in F as K extends { name: infer N extends string } ? N : never]: (
-          params: ExtractParamNames<K, Definitions>,
-        ) => Promise<ExtractReturnType<K, Definitions>>
+        [K in F as K extends { name: infer N extends string } ? N : never]: (options?: {
+          args?: ExtractParamNames<K, Definitions>
+          deposit?: bigint | string | number
+          gas?: bigint | string | number
+          waitUntil?: TxExecutionStatus
+        }) => Promise<ExtractReturnType<K, Definitions>>
       }
     : never
   : {}

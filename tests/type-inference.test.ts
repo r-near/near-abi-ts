@@ -129,7 +129,7 @@ describe("Type Inference", () => {
 
       expectTypeOf<ExtractedFunctions>()
         .toHaveProperty("testFunction")
-        .toBeCallableWith({ param1: "test", param2: 42 })
+        .toBeCallableWith({ args: { param1: "test", param2: 42 } })
 
       expectTypeOf<ExtractedFunctions>()
         .toHaveProperty("testFunction")

@@ -2,8 +2,9 @@
  * Runtime behavior tests
  */
 
-import { describe, expect, it } from "vitest"
+import { describe, expect, it, vi } from "vitest"
 import { createContract } from "../src/index.js"
+import type { Account } from "@near-js/accounts"
 
 describe("Contract Runtime", () => {
   const testAbi = {
@@ -56,15 +57,26 @@ describe("Contract Runtime", () => {
     },
   } as const
 
+  const mockAccount = {
+    viewFunction: vi.fn().mockResolvedValue([5, 6]),
+    callFunction: vi.fn().mockResolvedValue({ status: "success" }),
+  } as unknown as Account
+
   it("should create contract with methods", () => {
-    const contract = createContract(testAbi)
+    const contract = createContract(testAbi, mockAccount, "test.contract")
     expect(contract).toBeDefined()
     expect(typeof contract.add).toBe("function")
   })
 
-  it("should call methods and return mock results", async () => {
-    const contract = createContract(testAbi)
-    const result = await contract.add({ a: [1, 2], b: [3, 4] })
+  it("should call view methods correctly", async () => {
+    const contract = createContract(testAbi, mockAccount, "test.contract")
+    const result = await contract.add({ args: { a: [1, 2], b: [3, 4] } })
+    
+    expect(mockAccount.viewFunction).toHaveBeenCalledWith({
+      contractId: "test.contract",
+      methodName: "add",
+      args: { a: [1, 2], b: [3, 4] },
+    })
     expect(result).toEqual([5, 6])
   })
 })

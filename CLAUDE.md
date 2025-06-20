@@ -31,9 +31,9 @@ The system uses advanced TypeScript conditional types for compile-time NEAR ABI 
 - **`ExtractReturnType<F, Definitions>`**: Infers return types from function result schemas
 
 ### Runtime Layer
-- **`SimpleContract`**: Runtime class that dynamically creates methods from NEAR ABI functions
-- **`createContract(abi)`**: Factory function that combines runtime behavior with compile-time typing
-- Returns typed NEAR contract instances with full autocomplete and type safety
+- **`TypedContract`**: Runtime class that dynamically creates methods from NEAR ABI functions with full NEAR.js integration
+- **`createContract(abi, account, contractId)`**: Factory function that combines runtime behavior with compile-time typing
+- Returns typed NEAR contract instances with full autocomplete, type safety, and direct NEAR blockchain interaction
 
 ## Key Features
 
@@ -43,18 +43,34 @@ The system uses advanced TypeScript conditional types for compile-time NEAR ABI 
 - ✅ `$ref` resolution for custom types and definitions
 - ✅ String enums, union types, and null handling
 - ✅ Deep object nesting with full type safety
+- ✅ Full NEAR.js integration with Account objects
+- ✅ Support for deposit, gas, and waitUntil transaction parameters
+- ✅ Automatic view vs call function handling based on ABI kind
 
 ## Usage Pattern
 
 ```typescript
-// For inline ABI definitions
-const contract = createContract(nearAbi as const); // `as const` is crucial for type inference
+import { Account } from "@near-js/accounts"
+import { JsonRpcProvider } from "@near-js/providers"
+import { KeyPairSigner } from "@near-js/signers"
+import { createContract } from "near-abi-ts"
+
+// Setup NEAR connection
+const provider = new JsonRpcProvider({ url: "https://rpc.mainnet.near.org" })
+const signer = KeyPairSigner.fromSecretKey("ed25519:your-private-key")
+const account = new Account("your-account.near", provider, signer)
 
 // For exported TypeScript ABI definitions (recommended)
 import { myContractAbi } from "./my-contract-abi.js"
-const contract = createContract(myContractAbi); // Direct import with full type safety
+const contract = createContract(myContractAbi, account, "contract.near")
 
-await contract.methodName({ param: "value" }); // Full autocomplete + type checking for NEAR contract calls
+// Call contract methods with full type safety and additional options
+await contract.methodName({ 
+  args: { param: "value" },
+  deposit: "1000000000000000000000000", // 1 NEAR (optional)
+  gas: "300000000000000", // 300 TGas (optional)
+  waitUntil: "INCLUDED_FINAL" // Transaction finality (optional)
+})
 ```
 
 ## Development Environment
