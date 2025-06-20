@@ -1,12 +1,23 @@
 {
   "name": "near-abi-ts",
-  "module": "index.ts",
+  "version": "0.1.0",
+  "main": "./dist/index.js",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/index.js",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "type": "module",
   "private": true,
   "scripts": {
     "build": "rimraf dist && tsc",
-    "start": "bun index.ts",
-    "test": "vitest"
+    "start": "bun src/index.ts",
+    "test": "vitest --typecheck",
+    "lint": "biome check --write .",
+    "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.0.0",
