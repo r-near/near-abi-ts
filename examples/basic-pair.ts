@@ -13,14 +13,14 @@ export async function testContract() {
   const provider = new JsonRpcProvider({ url: "https://test.rpc.fastnear.com" })
   const signer = KeyPairSigner.fromSecretKey("ed25519:your-private-key")
   const account = new Account("your-account.testnet", provider, signer)
-  
+
   // Create typed contract
   const contract = createContract(basicPairAbi, account, "your-contract.testnet")
 
   // Call contract methods with full type safety
   const result = await contract.add({ args: { a: [1, 2], b: [3, 4] } })
   console.log("Result:", result)
-  
+
   // Call with additional parameters
   const resultWithDeposit = await contract.add_call({
     args: { a: [1, 2], b: [3, 4] },

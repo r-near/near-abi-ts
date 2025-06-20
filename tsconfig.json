@@ -25,7 +25,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
-    
+
     // Vitest types for tests
     "types": ["vitest/globals"]
   },

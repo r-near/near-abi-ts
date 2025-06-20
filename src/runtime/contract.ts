@@ -12,12 +12,14 @@ export class TypedContract {
     private contractId: string,
   ) {
     this.abi.body.functions.forEach((func: any) => {
-      ;(this as any)[func.name] = async (options: {
-        args?: any
-        deposit?: bigint | string | number
-        gas?: bigint | string | number
-        waitUntil?: TxExecutionStatus
-      } = {}) => {
+      ;(this as any)[func.name] = async (
+        options: {
+          args?: any
+          deposit?: bigint | string | number
+          gas?: bigint | string | number
+          waitUntil?: TxExecutionStatus
+        } = {},
+      ) => {
         const { args, deposit, gas, waitUntil } = options
 
         if (func.kind === "view") {

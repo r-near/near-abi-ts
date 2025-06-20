@@ -1,92 +1,92 @@
 export const basicPairAbi = {
-  "schema_version": "0.3.0",
-  "metadata": {},
-  "body": {
-    "functions": [
+  schema_version: "0.3.0",
+  metadata: {},
+  body: {
+    functions: [
       {
-        "name": "add",
-        "doc": " Adds two pairs point-wise.",
-        "kind": "view",
-        "params": {
-          "serialization_type": "json",
-          "args": [
+        name: "add",
+        doc: " Adds two pairs point-wise.",
+        kind: "view",
+        params: {
+          serialization_type: "json",
+          args: [
             {
-              "name": "a",
-              "type_schema": {
-                "$ref": "#/definitions/Pair"
-              }
+              name: "a",
+              type_schema: {
+                $ref: "#/definitions/Pair",
+              },
             },
             {
-              "name": "b",
-              "type_schema": {
-                "$ref": "#/definitions/Pair"
-              }
-            }
-          ]
-        },
-        "result": {
-          "serialization_type": "json",
-          "type_schema": {
-            "$ref": "#/definitions/Pair"
-          }
-        }
-      },
-      {
-        "name": "add_call",
-        "doc": " Adds two pairs point-wise.",
-        "kind": "call",
-        "params": {
-          "serialization_type": "json",
-          "args": [
-            {
-              "name": "a",
-              "type_schema": {
-                "$ref": "#/definitions/Pair"
-              }
+              name: "b",
+              type_schema: {
+                $ref: "#/definitions/Pair",
+              },
             },
-            {
-              "name": "b",
-              "type_schema": {
-                "$ref": "#/definitions/Pair"
-              }
-            }
-          ]
-        },
-        "result": {
-          "serialization_type": "json",
-          "type_schema": {
-            "$ref": "#/definitions/Pair"
-          }
-        }
-      },
-      {
-        "name": "empty_call",
-        "kind": "call"
-      }
-    ],
-    "root_schema": {
-      "$schema": "http://json-schema.org/draft-07/schema#",
-      "title": "String",
-      "type": "string",
-      "definitions": {
-        "Pair": {
-          "type": "array",
-          "items": [
-            {
-              "type": "integer",
-              "format": "uint32",
-              "minimum": 0.0
-            },
-            {
-              "type": "integer",
-              "format": "uint32",
-              "minimum": 0.0
-            }
           ],
-          "maxItems": 2,
-          "minItems": 2
-        }
-      }
-    }
-  }
+        },
+        result: {
+          serialization_type: "json",
+          type_schema: {
+            $ref: "#/definitions/Pair",
+          },
+        },
+      },
+      {
+        name: "add_call",
+        doc: " Adds two pairs point-wise.",
+        kind: "call",
+        params: {
+          serialization_type: "json",
+          args: [
+            {
+              name: "a",
+              type_schema: {
+                $ref: "#/definitions/Pair",
+              },
+            },
+            {
+              name: "b",
+              type_schema: {
+                $ref: "#/definitions/Pair",
+              },
+            },
+          ],
+        },
+        result: {
+          serialization_type: "json",
+          type_schema: {
+            $ref: "#/definitions/Pair",
+          },
+        },
+      },
+      {
+        name: "empty_call",
+        kind: "call",
+      },
+    ],
+    root_schema: {
+      $schema: "http://json-schema.org/draft-07/schema#",
+      title: "String",
+      type: "string",
+      definitions: {
+        Pair: {
+          type: "array",
+          items: [
+            {
+              type: "integer",
+              format: "uint32",
+              minimum: 0.0,
+            },
+            {
+              type: "integer",
+              format: "uint32",
+              minimum: 0.0,
+            },
+          ],
+          maxItems: 2,
+          minItems: 2,
+        },
+      },
+    },
+  },
 } as const

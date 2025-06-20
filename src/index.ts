@@ -5,9 +5,9 @@
  * interfaces from ABI definitions at compile time - no codegen required.
  */
 
+import type { Account } from "@near-js/accounts"
 import { TypedContract } from "./runtime/index.js"
 import type { ExtractFunctionNames } from "./types/index.js"
-import type { Account } from "@near-js/accounts"
 
 export function createContract<T extends { body: { functions: readonly any[] } }>(
   abi: T,

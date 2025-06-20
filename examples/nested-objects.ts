@@ -13,7 +13,7 @@ export async function testNestedObjects() {
   const provider = new JsonRpcProvider({ url: "https://test.rpc.fastnear.com" })
   const signer = KeyPairSigner.fromSecretKey("ed25519:your-private-key")
   const account = new Account("your-account.testnet", provider, signer)
-  
+
   // Create typed contract
   const nestedContract = createContract(nestedObjectsAbi, account, "your-contract.testnet")
 

@@ -2,8 +2,8 @@
  * NEAR ABI specific type extraction utilities
  */
 
-import type { ExtractDefinitions, JsonSchemaToType } from "./schema.js"
 import type { TxExecutionStatus } from "@near-js/types"
+import type { ExtractDefinitions, JsonSchemaToType } from "./schema.js"
 
 export type ExtractParamNames<F, Definitions = {}> = F extends {
   params: {
