@@ -87,6 +87,122 @@ describe("Type Inference", () => {
         JsonSchemaToType<{ $ref: "#/definitions/Pair" }, TestDefinitions>
       >().toEqualTypeOf<[number, number]>()
     })
+
+    it("should handle optional properties correctly", () => {
+      type TestObject = JsonSchemaToType<{
+        type: "object"
+        properties: {
+          required_field: { type: "string" }
+          optional_field: { type: "integer" }
+          another_required: { type: "boolean" }
+        }
+        required: ["required_field", "another_required"]
+      }>
+
+      expectTypeOf<TestObject>().toBeObject()
+      expectTypeOf<TestObject>().toHaveProperty("required_field")
+      expectTypeOf<TestObject>().toHaveProperty("optional_field")
+      expectTypeOf<TestObject>().toHaveProperty("another_required")
+
+      expectTypeOf<TestObject>().toHaveProperty("required_field").toBeString()
+      expectTypeOf<TestObject>().toHaveProperty("optional_field").toBeNumber()
+      expectTypeOf<TestObject>().toHaveProperty("another_required").toBeBoolean()
+
+      type RequiredFieldsOnly = Omit<TestObject, "optional_field">
+      expectTypeOf<RequiredFieldsOnly>().toEqualTypeOf<{
+        required_field: string
+        another_required: boolean
+      }>()
+    })
+
+    it("should handle objects with all optional properties", () => {
+      type AllOptional = JsonSchemaToType<{
+        type: "object"
+        properties: {
+          field1: { type: "string" }
+          field2: { type: "integer" }
+        }
+        required: []
+      }>
+
+      expectTypeOf<AllOptional>().toEqualTypeOf<{
+        field1?: string
+        field2?: number
+      }>()
+    })
+
+    it("should handle const values correctly", () => {
+      expectTypeOf<JsonSchemaToType<{ const: "literal" }>>().toEqualTypeOf<"literal">()
+      expectTypeOf<JsonSchemaToType<{ const: 42 }>>().toEqualTypeOf<42>()
+      expectTypeOf<JsonSchemaToType<{ const: true }>>().toEqualTypeOf<true>()
+      expectTypeOf<JsonSchemaToType<{ const: null }>>().toEqualTypeOf<null>()
+    })
+
+    it("should handle allOf for intersection types", () => {
+      type IntersectionType = JsonSchemaToType<{
+        allOf: [
+          {
+            type: "object"
+            properties: {
+              name: { type: "string" }
+            }
+          },
+          {
+            type: "object"
+            properties: {
+              age: { type: "integer" }
+            }
+          },
+        ]
+      }>
+
+      expectTypeOf<IntersectionType>().toEqualTypeOf<
+        {
+          name: string
+        } & {
+          age: number
+        }
+      >()
+    })
+
+    it("should handle union types with multiple primitive types", () => {
+      expectTypeOf<JsonSchemaToType<{ type: ["string", "null"] }>>().toEqualTypeOf<string | null>()
+      expectTypeOf<JsonSchemaToType<{ type: ["integer", "string"] }>>().toEqualTypeOf<
+        number | string
+      >()
+    })
+
+    it("should handle additionalProperties", () => {
+      type WithAdditionalProps = JsonSchemaToType<{
+        type: "object"
+        properties: {
+          name: { type: "string" }
+        }
+        additionalProperties: { type: "integer" }
+      }>
+
+      expectTypeOf<WithAdditionalProps>().toEqualTypeOf<
+        {
+          name: string
+        } & {
+          [key: string]: number
+        }
+      >()
+    })
+
+    it("should handle additionalProperties: false", () => {
+      type NoAdditionalProps = JsonSchemaToType<{
+        type: "object"
+        properties: {
+          name: { type: "string" }
+        }
+        additionalProperties: false
+      }>
+
+      expectTypeOf<NoAdditionalProps>().toEqualTypeOf<{
+        name: string
+      }>()
+    })
   })
 
   describe("ExtractFunctionNames", () => {

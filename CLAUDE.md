@@ -21,14 +21,27 @@ This repository contains a pure TypeScript type inference system that generates 
 
 The system uses advanced TypeScript conditional types for compile-time NEAR ABI parsing:
 
-### Type System (`index.ts`)
+### Type System (`src/types/`)
 - **`JsonSchemaToType<Schema, Definitions>`**: Core recursive type converter that transforms JSON Schema to TypeScript types
   - Handles `$ref` resolution, enums, objects, arrays, tuples, unions (`oneOf`/`anyOf`)
+  - ✅ **NEW**: Optional properties via `required` array support
+  - ✅ **NEW**: `const` values for literal types
+  - ✅ **NEW**: `allOf` for intersection types
+  - ✅ **NEW**: Union types with `type: ["string", "null"]` syntax
+  - ✅ **NEW**: `additionalProperties` for index signatures
   - Supports deep nesting and complex type structures
 - **`ExtractFunctionNames<T>`**: Extracts NEAR contract method signatures with full parameter and return type inference
 - **`ExtractDefinitions<T>`**: Extracts type definitions from ABI root schema
 - **`ExtractParamNames<F, Definitions>`**: Maps function parameters to typed objects
 - **`ExtractReturnType<F, Definitions>`**: Infers return types from function result schemas
+
+### Utility Types (`src/utils/`)
+- **Schema Validation**: `IsValidSchema`, `ValidateSchema`, `ExtractSchemaType`
+- **Property Utilities**: `GetRequiredProperties`, `GetOptionalProperties`
+- **ABI Utilities**: `IsNearAbi`, `ValidateNearAbi`, `GetFunctionNames`, `GetFunctionByName`
+- **Type Composition**: `MergeSchemas`, `UnionToIntersection`
+- **General Utilities**: `Optional`, `Required`, `Nullable`, `NonNullable`, `Constrain`
+- **Debugging**: `Debug`, `Pretty` for type inspection
 
 ### Runtime Layer
 - **`TypedContract`**: Runtime class that dynamically creates methods from NEAR ABI functions with full NEAR.js integration
@@ -42,10 +55,16 @@ The system uses advanced TypeScript conditional types for compile-time NEAR ABI 
 - ✅ Return type inference with proper typing
 - ✅ `$ref` resolution for custom types and definitions
 - ✅ String enums, union types, and null handling
+- ✅ **NEW**: Optional properties with `required` array support
+- ✅ **NEW**: Literal types with `const` values
+- ✅ **NEW**: Intersection types with `allOf`
+- ✅ **NEW**: Union primitive types (`type: ["string", "null"]`)
+- ✅ **NEW**: Index signatures with `additionalProperties`
 - ✅ Deep object nesting with full type safety
 - ✅ Full NEAR.js integration with Account objects
 - ✅ Support for deposit, gas, and waitUntil transaction parameters
 - ✅ Automatic view vs call function handling based on ABI kind
+- ✅ **NEW**: Comprehensive utility types for schema validation and manipulation
 
 ## Usage Pattern
 
