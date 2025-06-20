@@ -27,7 +27,7 @@ export type ExtractReturnType<F, Definitions = {}> = F extends {
   }
 }
   ? JsonSchemaToType<Schema, Definitions>
-  : void
+  : undefined
 
 export type ExtractFunctionNames<T> = T extends {
   body: {
