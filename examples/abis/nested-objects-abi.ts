@@ -1,4 +1,4 @@
-{
+export const nestedObjectsAbi = {
   "schema_version": "0.3.0",
   "metadata": {},
   "body": {
@@ -85,4 +85,4 @@
       "definitions": {}
     }
   }
-}
+} as const

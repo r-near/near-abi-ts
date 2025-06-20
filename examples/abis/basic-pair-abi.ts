@@ -1,4 +1,4 @@
-{
+export const basicPairAbi = {
   "schema_version": "0.3.0",
   "metadata": {},
   "body": {
@@ -89,4 +89,4 @@
       }
     }
   }
-}
+} as const

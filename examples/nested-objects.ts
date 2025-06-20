@@ -3,9 +3,9 @@
  */
 
 import { createContract } from "../src/index.js"
-import nestedObjectsAbi from "./abis/nested-objects.json" with { type: "json" }
+import { nestedObjectsAbi } from "./abis/nested-objects-abi.js"
 
-const nestedContract = createContract(nestedObjectsAbi as const)
+const nestedContract = createContract(nestedObjectsAbi)
 
 export async function testNestedObjects() {
   const result = await nestedContract.processDeepNesting({
@@ -26,3 +26,5 @@ export async function testNestedObjects() {
   console.log(result.processed.summary.count)
   console.log(result.processed.summary.status)
 }
+
+testNestedObjects()

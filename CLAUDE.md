@@ -47,7 +47,13 @@ The system uses advanced TypeScript conditional types for compile-time NEAR ABI 
 ## Usage Pattern
 
 ```typescript
+// For inline ABI definitions
 const contract = createContract(nearAbi as const); // `as const` is crucial for type inference
+
+// For exported TypeScript ABI definitions (recommended)
+import { myContractAbi } from "./my-contract-abi.js"
+const contract = createContract(myContractAbi); // Direct import with full type safety
+
 await contract.methodName({ param: "value" }); // Full autocomplete + type checking for NEAR contract calls
 ```
 
@@ -61,7 +67,10 @@ await contract.methodName({ param: "value" }); // Full autocomplete + type check
 
 ## Important Notes
 
-- Always use `as const` assertion when passing NEAR ABIs to `createContract()` for proper type inference
+- **ABI Definition Requirements**: ABIs must be defined in TypeScript files with `as const` assertion for proper type inference
+  - ✅ **Recommended**: `export const myAbi = {...} as const` in TypeScript files
+  - ✅ **Works**: Inline ABI objects with `as const` assertion
+  - ❌ **Not supported**: Importing JSON files (TypeScript cannot infer literal types from JSON imports)
 - The system works entirely at compile-time - no build tools or code generation required
 - Type inference relies on TypeScript's conditional types and mapped types
 
