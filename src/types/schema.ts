@@ -5,12 +5,12 @@
 export type ExtractDefinitions<T> = T extends {
   body: {
     root_schema: {
-      definitions: infer D;
-    };
-  };
+      definitions: infer D
+    }
+  }
 }
   ? D
-  : {};
+  : {}
 
 export type JsonSchemaToType<Schema, Definitions = {}> = Schema extends { $ref: infer Ref }
   ? Ref extends `#/definitions/${infer DefName}`
@@ -26,7 +26,7 @@ export type JsonSchemaToType<Schema, Definitions = {}> = Schema extends { $ref: 
       ? {
           -readonly [K in keyof Props]: Props[K] extends object
             ? JsonSchemaToType<Props[K], Definitions>
-            : any;
+            : any
         }
       : Schema extends { type: "array"; items: readonly [infer A, infer B, infer C] }
         ? [
@@ -60,4 +60,4 @@ export type JsonSchemaToType<Schema, Definitions = {}> = Schema extends { $ref: 
                               ? Union extends readonly any[]
                                 ? JsonSchemaToType<Union[number], Definitions>
                                 : any
-                              : any;
+                              : any

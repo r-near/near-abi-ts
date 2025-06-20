@@ -2,4 +2,4 @@
  * Runtime exports
  */
 
-export { SimpleContract } from "./contract.js";
+export { SimpleContract } from "./contract.js"

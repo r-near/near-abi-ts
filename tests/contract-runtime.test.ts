@@ -2,8 +2,8 @@
  * Runtime behavior tests
  */
 
-import { describe, it, expect } from "vitest";
-import { createContract } from "../src/index.js";
+import { describe, expect, it } from "vitest"
+import { createContract } from "../src/index.js"
 
 describe("Contract Runtime", () => {
   const testAbi = {
@@ -54,17 +54,17 @@ describe("Contract Runtime", () => {
         },
       },
     },
-  } as const;
+  } as const
 
   it("should create contract with methods", () => {
-    const contract = createContract(testAbi);
-    expect(contract).toBeDefined();
-    expect(typeof contract.add).toBe("function");
-  });
+    const contract = createContract(testAbi)
+    expect(contract).toBeDefined()
+    expect(typeof contract.add).toBe("function")
+  })
 
   it("should call methods and return mock results", async () => {
-    const contract = createContract(testAbi);
-    const result = await contract.add({ a: [1, 2], b: [3, 4] });
-    expect(result).toEqual([5, 6]);
-  });
-});
+    const contract = createContract(testAbi)
+    const result = await contract.add({ a: [1, 2], b: [3, 4] })
+    expect(result).toEqual([5, 6])
+  })
+})

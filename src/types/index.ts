@@ -2,5 +2,5 @@
  * Type system exports
  */
 
-export type { JsonSchemaToType, ExtractDefinitions } from "./schema.js";
-export type { ExtractParamNames, ExtractReturnType, ExtractFunctionNames } from "./near-abi.js";
+export type { ExtractFunctionNames, ExtractParamNames, ExtractReturnType } from "./near-abi.js"
+export type { ExtractDefinitions, JsonSchemaToType } from "./schema.js"

@@ -2,89 +2,92 @@
  * Type inference tests using Vitest
  */
 
-import { describe, it, expectTypeOf } from "vitest";
-import type { ExtractFunctionNames, JsonSchemaToType } from "../src/index.js";
+import { describe, expectTypeOf, it } from "vitest"
+import type { ExtractFunctionNames, JsonSchemaToType } from "../src/index.js"
 
 describe("Type Inference", () => {
   describe("JsonSchemaToType", () => {
     it("should convert basic types correctly", () => {
-      expectTypeOf<JsonSchemaToType<{ type: "string" }>>().toBeString();
-      expectTypeOf<JsonSchemaToType<{ type: "integer" }>>().toBeNumber();
-      expectTypeOf<JsonSchemaToType<{ type: "boolean" }>>().toBeBoolean();
-      expectTypeOf<JsonSchemaToType<{ type: "null" }>>().toBeNull();
-    });
+      expectTypeOf<JsonSchemaToType<{ type: "string" }>>().toBeString()
+      expectTypeOf<JsonSchemaToType<{ type: "integer" }>>().toBeNumber()
+      expectTypeOf<JsonSchemaToType<{ type: "boolean" }>>().toBeBoolean()
+      expectTypeOf<JsonSchemaToType<{ type: "null" }>>().toBeNull()
+    })
 
     it("should handle arrays correctly", () => {
-      expectTypeOf<JsonSchemaToType<{ type: "array"; items: { type: "string" } }>>().toBeArray();
-      expectTypeOf<JsonSchemaToType<{ type: "array"; items: { type: "string" } }>>()
-        .items.toBeString();
-      
+      expectTypeOf<JsonSchemaToType<{ type: "array"; items: { type: "string" } }>>().toBeArray()
+      expectTypeOf<
+        JsonSchemaToType<{ type: "array"; items: { type: "string" } }>
+      >().items.toBeString()
+
       expectTypeOf<
         JsonSchemaToType<{ type: "array"; items: [{ type: "integer" }, { type: "string" }] }>
-      >().toEqualTypeOf<[number, string]>();
-    });
+      >().toEqualTypeOf<[number, string]>()
+    })
 
     it("should handle objects correctly", () => {
       type TestObject = JsonSchemaToType<{
-        type: "object";
+        type: "object"
         properties: {
-          name: { type: "string" };
-          age: { type: "integer" };
-        };
-      }>;
-      
-      expectTypeOf<TestObject>().toBeObject();
-      expectTypeOf<TestObject>().toHaveProperty("name");
-      expectTypeOf<TestObject>().toHaveProperty("age");
-      expectTypeOf<TestObject>().toHaveProperty("name").toBeString();
-      expectTypeOf<TestObject>().toHaveProperty("age").toBeNumber();
-    });
+          name: { type: "string" }
+          age: { type: "integer" }
+        }
+      }>
+
+      expectTypeOf<TestObject>().toBeObject()
+      expectTypeOf<TestObject>().toHaveProperty("name")
+      expectTypeOf<TestObject>().toHaveProperty("age")
+      expectTypeOf<TestObject>().toHaveProperty("name").toBeString()
+      expectTypeOf<TestObject>().toHaveProperty("age").toBeNumber()
+    })
 
     it("should handle enums correctly as string literals", () => {
-      expectTypeOf<JsonSchemaToType<{ enum: ["success", "failure"] }>>()
-        .toEqualTypeOf<"success" | "failure">();
-    });
+      expectTypeOf<JsonSchemaToType<{ enum: ["success", "failure"] }>>().toEqualTypeOf<
+        "success" | "failure"
+      >()
+    })
 
     it("should handle deeply nested objects", () => {
       type NestedType = JsonSchemaToType<{
-        type: "object";
+        type: "object"
         properties: {
           level1: {
-            type: "object";
+            type: "object"
             properties: {
               level2: {
-                type: "object";
+                type: "object"
                 properties: {
-                  deepValue: { type: "string" };
-                };
-              };
-            };
-          };
-        };
-      }>;
-      
-      expectTypeOf<NestedType>().toBeObject();
-      expectTypeOf<NestedType>().toHaveProperty("level1");
-      expectTypeOf<NestedType>().toHaveProperty("level1").toHaveProperty("level2");
+                  deepValue: { type: "string" }
+                }
+              }
+            }
+          }
+        }
+      }>
+
+      expectTypeOf<NestedType>().toBeObject()
+      expectTypeOf<NestedType>().toHaveProperty("level1")
+      expectTypeOf<NestedType>().toHaveProperty("level1").toHaveProperty("level2")
       expectTypeOf<NestedType>()
         .toHaveProperty("level1")
         .toHaveProperty("level2")
         .toHaveProperty("deepValue")
-        .toBeString();
-    });
+        .toBeString()
+    })
 
     it("should handle $ref resolution", () => {
       type TestDefinitions = {
         Pair: {
-          type: "array";
-          items: [{ type: "integer" }, { type: "integer" }];
-        };
-      };
-      
-      expectTypeOf<JsonSchemaToType<{ $ref: "#/definitions/Pair" }, TestDefinitions>>()
-        .toEqualTypeOf<[number, number]>();
-    });
-  });
+          type: "array"
+          items: [{ type: "integer" }, { type: "integer" }]
+        }
+      }
+
+      expectTypeOf<
+        JsonSchemaToType<{ $ref: "#/definitions/Pair" }, TestDefinitions>
+      >().toEqualTypeOf<[number, number]>()
+    })
+  })
 
   describe("ExtractFunctionNames", () => {
     const testAbi = {
@@ -115,23 +118,23 @@ describe("Type Inference", () => {
           definitions: {},
         },
       },
-    } as const;
+    } as const
 
     it("should extract function signatures correctly", () => {
-      type ExtractedFunctions = ExtractFunctionNames<typeof testAbi>;
-      
-      expectTypeOf<ExtractedFunctions>().toBeObject();
-      expectTypeOf<ExtractedFunctions>().toHaveProperty("testFunction");
-      expectTypeOf<ExtractedFunctions>().toHaveProperty("testFunction").toBeFunction();
-      
+      type ExtractedFunctions = ExtractFunctionNames<typeof testAbi>
+
+      expectTypeOf<ExtractedFunctions>().toBeObject()
+      expectTypeOf<ExtractedFunctions>().toHaveProperty("testFunction")
+      expectTypeOf<ExtractedFunctions>().toHaveProperty("testFunction").toBeFunction()
+
       expectTypeOf<ExtractedFunctions>()
         .toHaveProperty("testFunction")
-        .toBeCallableWith({ param1: "test", param2: 42 });
-        
+        .toBeCallableWith({ param1: "test", param2: 42 })
+
       expectTypeOf<ExtractedFunctions>()
         .toHaveProperty("testFunction")
-        .returns.resolves.toBeBoolean();
-    });
+        .returns.resolves.toBeBoolean()
+    })
 
     it("should handle functions without parameters", () => {
       const emptyParamsAbi = {
@@ -147,18 +150,14 @@ describe("Type Inference", () => {
           ],
           root_schema: { definitions: {} },
         },
-      } as const;
+      } as const
 
-      type EmptyFunctions = ExtractFunctionNames<typeof emptyParamsAbi>;
-      
-      expectTypeOf<EmptyFunctions>()
-        .toHaveProperty("noParams")
-        .toBeCallableWith({});
-        
-      expectTypeOf<EmptyFunctions>()
-        .toHaveProperty("noParams")
-        .returns.resolves.toBeString();
-    });
+      type EmptyFunctions = ExtractFunctionNames<typeof emptyParamsAbi>
+
+      expectTypeOf<EmptyFunctions>().toHaveProperty("noParams").toBeCallableWith({})
+
+      expectTypeOf<EmptyFunctions>().toHaveProperty("noParams").returns.resolves.toBeString()
+    })
 
     it("should handle functions without return type", () => {
       const noReturnAbi = {
@@ -179,13 +178,11 @@ describe("Type Inference", () => {
           ],
           root_schema: { definitions: {} },
         },
-      } as const;
+      } as const
 
-      type VoidFunctions = ExtractFunctionNames<typeof noReturnAbi>;
-      
-      expectTypeOf<VoidFunctions>()
-        .toHaveProperty("voidFunction")
-        .returns.resolves.toBeVoid();
-    });
-  });
-});
+      type VoidFunctions = ExtractFunctionNames<typeof noReturnAbi>
+
+      expectTypeOf<VoidFunctions>().toHaveProperty("voidFunction").returns.resolves.toBeVoid()
+    })
+  })
+})

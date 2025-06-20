@@ -2,10 +2,10 @@
  * Example demonstrating deeply nested object type inference
  */
 
-import { createContract } from "../src/index.js";
-import nestedObjectsAbi from "./abis/nested-objects.json" with { type: "json" };
+import { createContract } from "../src/index.js"
+import nestedObjectsAbi from "./abis/nested-objects.json" with { type: "json" }
 
-const nestedContract = createContract(nestedObjectsAbi as const);
+const nestedContract = createContract(nestedObjectsAbi as const)
 
 export async function testNestedObjects() {
   const result = await nestedContract.processDeepNesting({
@@ -21,8 +21,8 @@ export async function testNestedObjects() {
       },
       topLevel: "top level string",
     },
-  });
+  })
 
-  console.log(result.processed.summary.count);
-  console.log(result.processed.summary.status);
+  console.log(result.processed.summary.count)
+  console.log(result.processed.summary.status)
 }

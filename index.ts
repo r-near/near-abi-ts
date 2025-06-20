@@ -3,11 +3,11 @@
  * @deprecated Import from 'near-abi-ts' or 'near-abi-ts/src' instead
  */
 
-export { createContract } from "./src/index.js";
 export type {
-  JsonSchemaToType,
   ExtractDefinitions,
+  ExtractFunctionNames,
   ExtractParamNames,
   ExtractReturnType,
-  ExtractFunctionNames,
-} from "./src/index.js";
+  JsonSchemaToType,
+} from "./src/index.js"
+export { createContract } from "./src/index.js"
