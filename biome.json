@@ -34,5 +34,13 @@
       "quoteStyle": "double",
       "semicolons": "asNeeded"
     }
+  },
+  "assist": {
+    "enabled": true,
+    "actions": {
+      "source": {
+        "organizeImports": "on"
+      }
+    }
   }
 }
