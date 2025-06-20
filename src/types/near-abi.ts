@@ -36,12 +36,21 @@ export type ExtractFunctionNames<T> = T extends {
 }
   ? ExtractDefinitions<T> extends infer Definitions
     ? {
-        [K in F as K extends { name: infer N extends string } ? N : never]: (options?: {
-          args?: ExtractParamNames<K, Definitions>
-          deposit?: bigint | string | number
-          gas?: bigint | string | number
-          waitUntil?: TxExecutionStatus
-        }) => Promise<ExtractReturnType<K, Definitions>>
+        [K in F as K extends { name: infer N extends string } ? N : never]: ExtractParamNames<
+          K,
+          Definitions
+        > extends Record<string, never>
+          ? (options?: {
+              deposit?: bigint | string | number
+              gas?: bigint | string | number
+              waitUntil?: TxExecutionStatus
+            }) => Promise<ExtractReturnType<K, Definitions>>
+          : (options: {
+              args: ExtractParamNames<K, Definitions>
+              deposit?: bigint | string | number
+              gas?: bigint | string | number
+              waitUntil?: TxExecutionStatus
+            }) => Promise<ExtractReturnType<K, Definitions>>
       }
     : never
   : {}

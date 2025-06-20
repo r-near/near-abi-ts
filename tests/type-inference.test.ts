@@ -295,6 +295,37 @@ describe("Type Inference", () => {
       type VoidFunctions = ExtractFunctionNames<typeof noReturnAbi>
 
       expectTypeOf<VoidFunctions>().toHaveProperty("voidFunction").returns.resolves.toBeVoid()
+      expectTypeOf<VoidFunctions>()
+        .toHaveProperty("voidFunction")
+        .toBeCallableWith({
+          args: { input: "test" },
+        })
+    })
+
+    it("should require args for functions with parameters", () => {
+      const paramAbi = {
+        body: {
+          functions: [
+            {
+              name: "withParams",
+              params: {
+                serialization_type: "json",
+                args: [{ name: "required_param", type_schema: { type: "string" } }],
+              },
+            },
+          ],
+          root_schema: { definitions: {} },
+        },
+      } as const
+
+      type ParamFunctions = ExtractFunctionNames<typeof paramAbi>
+
+      // Should require the options parameter with args
+      expectTypeOf<ParamFunctions>()
+        .toHaveProperty("withParams")
+        .toBeCallableWith({
+          args: { required_param: "test" },
+        })
     })
   })
 })

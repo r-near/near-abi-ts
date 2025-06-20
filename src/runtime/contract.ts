@@ -20,19 +20,15 @@ export class TypedContract {
           waitUntil?: TxExecutionStatus
         } = {},
       ) => {
-        const { args, deposit, gas, waitUntil } = options
+        const { args = {}, deposit, gas, waitUntil } = options
 
         if (func.kind === "view") {
-          return await this.account.viewFunction({
-            contractId: this.contractId,
-            methodName: func.name,
-            args: args || {},
-          })
+          return await this.account.provider.callFunction(this.contractId, func.name, args)
         } else {
           return await this.account.callFunction({
             contractId: this.contractId,
             methodName: func.name,
-            args: args || {},
+            args,
             deposit,
             gas,
             waitUntil,

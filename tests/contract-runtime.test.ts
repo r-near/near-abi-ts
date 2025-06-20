@@ -58,7 +58,9 @@ describe("Contract Runtime", () => {
   } as const
 
   const mockAccount = {
-    viewFunction: vi.fn().mockResolvedValue([5, 6]),
+    provider: {
+      callFunction: vi.fn().mockResolvedValue([5, 6]),
+    },
     callFunction: vi.fn().mockResolvedValue({ status: "success" }),
   } as unknown as Account
 
@@ -72,10 +74,9 @@ describe("Contract Runtime", () => {
     const contract = createContract(testAbi, mockAccount, "test.contract")
     const result = await contract.add({ args: { a: [1, 2], b: [3, 4] } })
 
-    expect(mockAccount.viewFunction).toHaveBeenCalledWith({
-      contractId: "test.contract",
-      methodName: "add",
-      args: { a: [1, 2], b: [3, 4] },
+    expect(mockAccount.provider.callFunction).toHaveBeenCalledWith("test.contract", "add", {
+      a: [1, 2],
+      b: [3, 4],
     })
     expect(result).toEqual([5, 6])
   })
