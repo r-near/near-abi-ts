@@ -10,7 +10,6 @@
 
     "verbatimModuleSyntax": true,
     "outDir": "dist",
-    //"rootDir": "src",
     "sourceMap": true,
     "declaration": true,
     "resolveJsonModule": true,
@@ -25,8 +24,14 @@
     // Some stricter flags (disabled by default)
     "noUnusedLocals": false,
     "noUnusedParameters": false,
-    "noPropertyAccessFromIndexSignature": false
+    "noPropertyAccessFromIndexSignature": false,
+    
+    // Vitest types for tests
+    "types": ["vitest/globals"]
   },
-  "include": ["src/**/*"],
-  "exclude": ["examples", "tests", "dist", "node_modules"]
+  "include": ["src/**/*", "examples/**/*", "tests/**/*", "index.ts"],
+  "exclude": ["dist", "node_modules"],
+  "ts-node": {
+    "esm": true
+  }
 }

@@ -13,7 +13,7 @@
   "type": "module",
   "private": true,
   "scripts": {
-    "build": "rimraf dist && tsc",
+    "build": "rimraf dist && tsc --project tsconfig.build.json",
     "start": "bun src/index.ts",
     "test": "vitest --typecheck",
     "lint": "biome check --write .",
